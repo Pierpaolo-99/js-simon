@@ -32,6 +32,13 @@ const listRandomNumber = generateRandomNumbers()
 numbersListEl.innerHTML = `<li>${listRandomNumber}</li>`
 console.log(listRandomNumber);
 
+// after 30 seconds the numbers disappear and forms appear
+
+setTimeout(() => {
+    numbersListEl.classList.add('d-none')
+    formEl.classList.remove('d-none')
+}, 30000);
+
 
 
 
