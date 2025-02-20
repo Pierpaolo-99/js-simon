@@ -32,12 +32,23 @@ const listRandomNumber = generateRandomNumbers()
 numbersListEl.innerHTML = `<li>${listRandomNumber}</li>`
 console.log(listRandomNumber);
 
+// generate countdown
+let second = 30
+setInterval (function () {
+    countdownEl.innerHTML = --second
+    if (countdownEl.innerHTML == 0){
+        countdownEl.classList.add('d-none')
+    }
+}, 1000)
+
 // after 30 seconds the numbers disappear and forms appear
 
 setTimeout(() => {
     numbersListEl.classList.add('d-none')
     formEl.classList.remove('d-none')
 }, 30000);
+
+
 
 
 
