@@ -7,20 +7,21 @@ non è importante l'ordine con cui l'utente inserisce i numeri, basta che ne ind
 // take the elements and save in the variable
 
 const countdownEl = document.getElementById('countdown')
-console.log(countdownEl);
 
 const numbersListEl = document.getElementById('numbers-list')
-console.log(numbersListEl);
 
 const formEl = document.getElementById('answers-form')
-console.log(formEl);
+
+const messageEl = document.getElementById('message')
+
+const inputGroupEl = document.getElementById('input-group')
 
 // generate five random numbers
 
 function generateRandomNumbers (){
     const arrayRandomNumbers = []
     for (let i = 0; i < 5; i++){
-        const randomNumbers = Math.floor(Math.random() * 100)
+        const randomNumbers = Math.floor(Math.random() * 50) +1
         if (arrayRandomNumbers.indexOf(randomNumbers) === -1){
             arrayRandomNumbers.push(randomNumbers)
         }
@@ -33,20 +34,44 @@ numbersListEl.innerHTML = `<li>${listRandomNumber}</li>`
 console.log(listRandomNumber);
 
 // generate countdown
-let second = 30
-setInterval (function () {
-    countdownEl.innerHTML = --second
+let countdownInterval;
+let second = 3
+countdownInterval = setInterval (function () {
+    countdownEl.innerHTML = second--
     if (countdownEl.innerHTML == 0){
-        countdownEl.classList.add('d-none')
+        clearInterval(countdownInterval)
     }
 }, 1000)
 
 // after 30 seconds the numbers disappear and forms appear
+let timeoutSecond;
 
-setTimeout(() => {
+timeoutSecond = setTimeout(() => {
     numbersListEl.classList.add('d-none')
     formEl.classList.remove('d-none')
-}, 30000);
+}, 3000);
+
+// indicates which and how many numbers are in common
+
+formEl.addEventListener('submit', function arrayChosenNumber (e){
+    e.defaultPrevented
+    
+    let chosenNumber = []
+    chosenNumber.push(inputGroupEl.innerText)
+    for (let i = 0; i < listRandomNumber.length; i++){
+        if (chosenNumber.includes(listRandomNumber)){
+            messageEl.innerText = chosenNumber[i]
+        }
+    }
+})
+
+
+
+
+
+
+
+
 
 
 
