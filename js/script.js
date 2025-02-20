@@ -17,11 +17,23 @@ console.log(formEl);
 
 // generate five random numbers
 
-const randomNumbers = Math.floor(Math.random() * 100)
+function generateRandomNumbers (){
+    const arrayRandomNumbers = []
+    for (let i = 0; i < 5; i++){
+        const randomNumbers = Math.floor(Math.random() * 100)
+        if (arrayRandomNumbers.indexOf(randomNumbers) === -1){
+            arrayRandomNumbers.push(randomNumbers)
+        }
+    }
+    return arrayRandomNumbers
+}
 
-numbersListEl.innerHTML = `<li>${randomNumbers}</li>`
+const listRandomNumber = generateRandomNumbers()
+numbersListEl.innerHTML = `<li>${listRandomNumber}</li>`
+console.log(listRandomNumber);
 
-console.log(numbersListEl);
+
+
 
 
 
