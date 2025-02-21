@@ -35,7 +35,7 @@ console.log(listRandomNumber);
 
 // generate countdown
 let countdownInterval;
-let second = 3
+let second = 30
 countdownInterval = setInterval (function () {
     countdownEl.innerHTML = second--
     if (countdownEl.innerHTML == 0){
@@ -49,7 +49,7 @@ let timeoutSecond;
 timeoutSecond = setTimeout(() => {
     numbersListEl.classList.add('d-none')
     formEl.classList.remove('d-none')
-}, 3000);
+}, 30000);
 
 // indicates which and how many numbers are in common
 
@@ -64,7 +64,6 @@ formEl.addEventListener('submit', function arrayChosenNumber (e){
         }
     }
 })
-
 
 
 
