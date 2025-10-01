@@ -6,63 +6,119 @@ non è importante l'ordine con cui l'utente inserisce i numeri, basta che ne ind
 
 // take the elements and save in the variable
 
-const countdownEl = document.getElementById('countdown')
+const numbersListEl = document.getElementById('numbers-list');
+const countdownEl = document.getElementById('countdown');
+const instructionEl = document.getElementById('instructions');
+const formEl = document.getElementById('answers-form');
+const messageEl = document.getElementById('message');
+document.getElementsByClassName('form-control').multiple = true;
+const formInputEl = document.getElementsByClassName('form-control')
 
-const numbersListEl = document.getElementById('numbers-list')
 
-const formEl = document.getElementById('answers-form')
 
-const messageEl = document.getElementById('message')
+// generate random numbers
 
-const inputGroupEl = document.getElementById('input-group')
-
-// generate five random numbers
-
-function generateRandomNumbers (){
-    const arrayRandomNumbers = []
-    for (let i = 0; i < 5; i++){
-        const randomNumbers = Math.floor(Math.random() * 50) +1
-        if (arrayRandomNumbers.indexOf(randomNumbers) === -1){
-            arrayRandomNumbers.push(randomNumbers)
-        }
-    }
-    return arrayRandomNumbers
+function generateRandomNumber (min,max){
+    return Math.floor(Math.random() * (max - min) ) + min;
 }
 
-const listRandomNumber = generateRandomNumbers()
-numbersListEl.innerHTML = `<li>${listRandomNumber}</li>`
-console.log(listRandomNumber);
+// generate array with random number
+function generateArrayNumber (min,max,n){
+    arrayNumber = []
+    for (let i = 0; i < n; i++){
+        arrayNumber.push(Number(generateRandomNumber(min,max)))
+    }
+    return arrayNumber
+}
 
-// generate countdown
-let countdownInterval;
-let second = 30
-countdownInterval = setInterval (function () {
-    countdownEl.innerHTML = second--
-    if (countdownEl.innerHTML == 0){
-        clearInterval(countdownInterval)
+const randomNumbersList = generateArrayNumber(1,50,5)
+console.log(randomNumbersList);
+
+// generate markup for list
+function generateListEl (list){
+    let listEl = ''
+    for (let i = 0; i < list.length; i++){
+        listEl += `<li>${list[i]}</li>`
+    }
+    return listEl
+}
+
+const randomNumbersListEl = generateListEl(randomNumbersList)
+console.log(randomNumbersListEl);
+
+// inner list in page
+
+numbersListEl.innerHTML = randomNumbersListEl
+
+// inner countdown in pege
+
+let countdownTimes = 3
+
+countdownEl.innerHTML = countdownTimes
+
+// generate interval function 
+const countdown = setInterval(() => {
+    countdownEl.innerText = --countdownTimes
+    if (countdownTimes === 0){
+        clearInterval(countdown)
+        numbersListEl.classList.toggle('d-none')
+        formEl.classList.toggle('d-none')
+        instructionEl.innerText = "inserisci i numeri che ricordi"
     }
 }, 1000)
 
-// after 30 seconds the numbers disappear and forms appear
-let timeoutSecond;
+let userNumberList = []
 
-timeoutSecond = setTimeout(() => {
-    numbersListEl.classList.add('d-none')
-    formEl.classList.remove('d-none')
-}, 30000);
+let rememberNumber = []
 
-// indicates which and how many numbers are in common
+function createUserListNumber (list){
+    const numberList = []
+    for (let i = 0; i < list.length; i++){
+        const thisElement = list[i].value
+        numberList.push(Number(thisElement))
+    }
+    return numberList
+}
 
-formEl.addEventListener('submit', function arrayChosenNumber (e){
-    e.defaultPrevented
-    
-    let chosenNumber = []
-    chosenNumber.push(inputGroupEl.innerText)
-    for (let i = 0; i < listRandomNumber.length; i++){
-        if (chosenNumber.includes(listRandomNumber)){
-            messageEl.innerText = chosenNumber[i]
+function commonList (list1,list2){
+    const list = []
+
+    for (let i = 0; i < list1.length; i++){
+        const thisUserNumber = list1[i]
+
+        for (let y = 0; y < list2.length; y++){
+            const thisRandomNumber = list2[y]
+
+            if (thisUserNumber === thisRandomNumber){
+                list.push(thisUserNumber)
+            }
         }
     }
+    return list
+}
+
+function generateResultString (list){
+    let resultString = `hai indovinato ${list.length} numeri, e sono: `
+    for (let i = 0; i < list.length; i++){
+        resultString += ` ${list[i]}`
+    }
+    return resultString
+}
+
+formEl.addEventListener('submit', function(e){
+    e.preventDefault()
+
+    userNumberList = createUserListNumber(formInputEl)
+    console.log(userNumberList);
+
+    rememberNumber = commonList(userNumberList,randomNumbersList)
+    console.log(rememberNumber);
+    
+
+    formEl.classList.toggle('d-none')
+    countdownEl.classList.toggle('d-none')
+
+    instructionEl.innerText = generateResultString(rememberNumber)
 })
 
 
